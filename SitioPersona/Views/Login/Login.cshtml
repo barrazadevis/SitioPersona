@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h2>Iniciar Sesión</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Usuario")
+            <div class="col-md-10">
+                @Html.TextBox("Usuario")
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Contraseña")
+            <div class="col-md-10">
+                @Html.Password("pass")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Iniciar Sesión" class="btn btn-primary" />
+            </div>
+        </div>
+
+    </div>
+
+
+}
