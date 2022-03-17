@@ -50,7 +50,7 @@ namespace SitioPersona
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=PersonaUsuario}/{action=Index}/{id?}");
+                    pattern: "{controller=PersonaUsuario}/{action=IndexPersona}/{id?}");
             });
 
             app.UseEndpoints(endpoints =>

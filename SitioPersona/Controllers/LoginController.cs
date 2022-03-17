@@ -107,7 +107,7 @@ namespace SitioPersona.Controllers
                     catch (Exception)
                     {
 
-                        ModelState.AddModelError(string.Empty, "No hubo comunicación con el servidor remoto, comuniquese con el administrador");
+                        ModelState.AddModelError(string.Empty, "No hubo comunicación con el servidor remoto, contacte al administrador");
 
                         return View("Login", usuario);
                     }

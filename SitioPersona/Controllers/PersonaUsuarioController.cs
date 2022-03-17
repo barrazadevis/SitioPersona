@@ -26,7 +26,7 @@ namespace SitioPersona.Controllers
             apiBaseUrl = _Configure.GetValue<string>("WebAPIBaseUrl");
         }
 
-        public IActionResult Index()
+        public IActionResult IndexPersona()
         {
             IEnumerable<Persona> personas = null;
             IEnumerable<Usuario> usuarios = null;
@@ -36,67 +36,78 @@ namespace SitioPersona.Controllers
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(apiBaseUrl);
-                //HTTP GET
-                var responseTask = client.GetAsync("Registro");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    var readTask = result.Content.ReadAsAsync<IList<Persona>>();
-                    readTask.Wait();
+                    client.BaseAddress = new Uri(apiBaseUrl);
+                    //HTTP GET
+                    var responseTask = client.GetAsync("Registro");
+                    responseTask.Wait();
 
-                    personas = readTask.Result;
-
-                    var responseUsuario = client.GetAsync("Usuario");
-                    responseUsuario.Wait();
-                    var resultU = responseUsuario.Result;
-                    if (resultU.IsSuccessStatusCode)
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
                     {
-                        var readRespuestaUsuarios = resultU.Content.ReadAsAsync<IList<Usuario>>();
-                        readRespuestaUsuarios.Wait();
+                        var readTask = result.Content.ReadAsAsync<IList<Persona>>();
+                        readTask.Wait();
 
-                        usuarios = readRespuestaUsuarios.Result;
+                        personas = readTask.Result;
 
-                        foreach (Persona persona in personas)
+                        var responseUsuario = client.GetAsync("Usuario");
+                        responseUsuario.Wait();
+                        var resultU = responseUsuario.Result;
+                        if (resultU.IsSuccessStatusCode)
                         {
-                            foreach (Usuario usuario in usuarios)
-                            {
-                                if (persona.Identificador == usuario.FkPersona)
-                                {
-                                    personaUsuario= new PersonaUsuario();
-                                    personaUsuario.Identificador = persona.Identificador;
-                                    personaUsuario.Nombres = persona.Nombres;
-                                    personaUsuario.Apellidos = persona.Apellidos;
-                                    personaUsuario.NumeroIdentificacion = persona.NumeroIdentificacion;
-                                    personaUsuario.Email = persona.Email;
-                                    personaUsuario.TipoIdentificacion = persona.TipoIdentificacion;
-                                    personaUsuario.FechaCreacion = persona.FechaCreacion;
+                            var readRespuestaUsuarios = resultU.Content.ReadAsAsync<IList<Usuario>>();
+                            readRespuestaUsuarios.Wait();
 
-                                    personaUsuario.IdUsuario = usuario.IdUsuario;
-                                    personaUsuario.Usuario1 = usuario.Usuario1;
-                                    personaUsuario.Pass = usuario.Pass;
-                                    personaUsuario.FechaCreacionUsuario = usuario.FechaCreacion;
-                                    listapersonaUsuarios.Add(personaUsuario);
+                            usuarios = readRespuestaUsuarios.Result;
+
+                            foreach (Persona persona in personas)
+                            {
+                                foreach (Usuario usuario in usuarios)
+                                {
+                                    if (persona.Identificador == usuario.FkPersona)
+                                    {
+                                        personaUsuario = new PersonaUsuario();
+                                        personaUsuario.Identificador = persona.Identificador;
+                                        personaUsuario.Nombres = persona.Nombres;
+                                        personaUsuario.Apellidos = persona.Apellidos;
+                                        personaUsuario.NumeroIdentificacion = persona.NumeroIdentificacion;
+                                        personaUsuario.Email = persona.Email;
+                                        personaUsuario.TipoIdentificacion = persona.TipoIdentificacion;
+                                        personaUsuario.FechaCreacion = persona.FechaCreacion;
+
+                                        personaUsuario.IdUsuario = usuario.IdUsuario;
+                                        personaUsuario.Usuario1 = usuario.Usuario1;
+                                        personaUsuario.Pass = usuario.Pass;
+                                        personaUsuario.FechaCreacionUsuario = usuario.FechaCreacion;
+                                        listapersonaUsuarios.Add(personaUsuario);
+                                    }
+
                                 }
-                                
+
                             }
-                            
+
+                            personaUsuarios = listapersonaUsuarios;
                         }
 
-                        personaUsuarios = listapersonaUsuarios;
                     }
+                    else //web api sent error response 
+                    {
+                        //log response status here..
 
+                        personaUsuarios = Enumerable.Empty<PersonaUsuario>();
+
+                        ModelState.AddModelError(string.Empty, "Se presentaron errores al cargar la lista de Personas");
+                    }
                 }
-                else //web api sent error response 
+                catch (Exception)
                 {
-                    //log response status here..
 
                     personaUsuarios = Enumerable.Empty<PersonaUsuario>();
 
-                    ModelState.AddModelError(string.Empty, "Se presentaron errores al cargar la lista de Personas");
+                    ModelState.AddModelError(string.Empty, "No Hubo conexión con el servidor remoto, contacte al administrador");
                 }
+                
             }
             return View(personaUsuarios);
         }
