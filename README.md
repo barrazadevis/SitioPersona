@@ -22,6 +22,9 @@ Sitio Web, permite el registro de Entidades de tipo personas y Usuarios a travé
    ![image](https://user-images.githubusercontent.com/39510736/158775065-c107d774-57d7-4c39-9f8e-bc7984375b1d.png)
    * El index del sitio Web nos muestra la tabla con las personas que se encuentren registradas
    * La opción inicio del menú de navegación muestra una tabla con todas las personas registradas y con su respectivo usuario
-   * La opción login del menú de navegación nos lleva a un formulario que pide usuario y contraseña y tiene un botón de iniciar sesión, si el usuario existe en la base de datos, le mostrará el detalle de la persona
-   * El botón registrar nos lleva al formulario de registro de persona, el cual contiene los datos para el posterior registro incluyendo los del usuario
+   * La opción login del menú de navegación nos lleva a un formulario que pide usuario y contraseña y tiene un botón de iniciar sesión, si el usuario existe en la base        de datos, le mostrará el detalle de la persona
+     ![image](https://user-images.githubusercontent.com/39510736/158776399-3a8a12bb-8d33-43c9-89f9-d25d341e135d.png)
+   * El botón registrar nos lleva al formulario de registro de persona, el cual contiene los campos para el posterior registro incluyendo los del usuario
+     ![image](https://user-images.githubusercontent.com/39510736/158776529-1a764761-5a7d-4776-a009-b8e22ea5049d.png)
+
 
